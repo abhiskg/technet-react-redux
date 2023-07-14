@@ -1,4 +1,10 @@
-import { useAppSelector } from '@/redux/hook';
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import {
+  addToCart,
+  removeFromCart,
+  removeOne,
+} from '@/redux/features/cart/cartSlice';
+import { useAppDispatch, useAppSelector } from '@/redux/hook';
 import {
   HiMinus,
   HiOutlinePlus,
@@ -15,12 +21,8 @@ import {
 } from './ui/sheet';
 
 export default function Cart() {
-  const { products } = useAppSelector((state) => state.cart);
-  //! Dummy data
-
-  const total = 0;
-
-  //! **
+  const { products, total } = useAppSelector((state) => state.cart);
+  const dispatch = useAppDispatch();
 
   return (
     <Sheet>
@@ -52,15 +54,16 @@ export default function Cart() {
                 </p>
               </div>
               <div className="border-l pl-5 flex flex-col justify-between">
-                <Button>
+                <Button onClick={() => dispatch(addToCart(product))}>
                   <HiOutlinePlus size="20" />
                 </Button>
-                <Button>
+                <Button onClick={() => dispatch(removeOne(product))}>
                   <HiMinus size="20" />
                 </Button>
                 <Button
                   variant="destructive"
                   className="bg-red-500 hover:bg-red-400"
+                  onClick={() => dispatch(removeFromCart(product))}
                 >
                   <HiOutlineTrash size="20" />
                 </Button>
